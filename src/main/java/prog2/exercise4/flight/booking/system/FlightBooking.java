@@ -4,9 +4,9 @@ import java.util.Objects;
 
 
 class FlightBooking {
-    private String flightCompany = " Flights-of-Fancy";
-    private String flightID = "19191810";
-    private String passengerFullName;
+    private final String flightCompany = " Flights-of-Fancy";
+    private final String flightID = "19191810";
+    private final String passengerFullName;
 
 
     public String getFlightID() {
@@ -27,7 +27,20 @@ class FlightBooking {
         this.departureDate = departureDate;
         this.returnDate = returnDate;
         setTotalPassengers(childPassengers,adultPassengers);
+        setBookingClass("1");
+        setTripType("1");
+        setTripSource("1");
+        setTripDestination("2","1");
 
+        setSource_airport();
+        setDestination_airport();
+        settype();
+        setclasses();
+        setabroad();
+        setTicketNumber();
+        setDepartingTicketPrice(1,3);
+        setReturnTicketPrice();
+        setTotalTicketPrice();
     }
 
 
@@ -89,7 +102,6 @@ class FlightBooking {
     }
     public enum BookingClass{
         FIRST,BUSINESS,ECONOMY
-
     }
     public enum TripSource{
         NANJING, BEIJING, SHANGHAI,  OULU, HELSINKI,PARIS
@@ -153,19 +165,23 @@ class FlightBooking {
     String Tripdestination;
     FlightBooking.TripDestination destination;                                 //目的
 
-    public void setTripDestination(String tripdestination){
+    public void setTripDestination(String tripdestination,String tripsource){
         switch(tripdestination){
             case "1":
                 destination = TripDestination.NANJING;
+                if(tripsource == "1"){destination = null;}
                 break;
             case "2":
                 destination = TripDestination.BEIJING;
+                if(tripsource == "2"){destination = null;}
                 break;
             case "3":
                 destination = TripDestination.OULU;
+                if(tripsource == "3"){destination = null;}
                 break;
             case "4":
                 destination = TripDestination.HELSINKI;
+                if(tripsource == "4"){destination = null;}
                 break;
             default:
                 System.out.println("wrong");
@@ -195,16 +211,6 @@ class FlightBooking {
     public String getDestination_airport() {return TripDestination_Airport;
     }
 
-    public void Comparing() {
-        String[] Compare = {this.Tripsource,this.Tripdestination};
-        if(Objects.equals(Compare[0], Compare[1])){
-            this.Tripsource= null;
-            this.Tripdestination = null;
-            System.out.println("wrong");
-        }
-        else {this.Tripsource = Tripsource;
-            this.Tripdestination = Tripdestination;}
-    }                                                                                   //检测重复
 
     String type;
     String classes;
@@ -270,7 +276,7 @@ class FlightBooking {
 
     String TicketNumber;
     public void setTicketNumber(){
-        TicketNumber = type + classes + "1145" +abroad;                              //合成大怨种
+        TicketNumber = type + classes + "1919" +abroad;                              //合成大怨种
     }
     public String getTicketNumber() {
         return TicketNumber;
