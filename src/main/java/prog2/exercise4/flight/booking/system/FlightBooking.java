@@ -1,7 +1,6 @@
 package prog2.exercise4.flight.booking.system;
 import java.time.LocalDate;
-import java.util.Objects;
-
+import java.time.temporal.ChronoUnit;
 
 class FlightBooking {
     private final String flightCompany = " Flights-of-Fancy";
@@ -24,14 +23,13 @@ class FlightBooking {
         this.childPassengers = childPassengers;
         this.adultPassengers = adultPassengers;
         this.passengerFullName = passengerFullName;
-        this.departureDate = departureDate;
-        this.returnDate = returnDate;
+        //this.departureDate = String.valueOf(departureDate);
+        //this.returnDate = String.valueOf(returnDate);
         setTotalPassengers(childPassengers,adultPassengers);
         setBookingClass("1");
         setTripType("1");
         setTripSource("1");
         setTripDestination("2","1");
-
         setSource_airport();
         setDestination_airport();
         settype();
@@ -41,6 +39,8 @@ class FlightBooking {
         setDepartingTicketPrice(1,3);
         setReturnTicketPrice();
         setTotalTicketPrice();
+        setDepartureDate(departuredate);
+        setReturnDate(returndate);
     }
 
 
@@ -84,17 +84,34 @@ class FlightBooking {
         return Tripype;
     }
 //-------------------------------------------------------------------------------------
+String DepartureDate= "2023-03-04";
+    LocalDate departuredate = LocalDate.parse(DepartureDate);
+    String ReturnDate = "2023-03-05";
+    LocalDate returndate = LocalDate.parse(ReturnDate);
+    long Cha = ChronoUnit.DAYS.between(departuredate,returndate);
 
-    LocalDate departureDate;
-    LocalDate returnDate;
-    public void setDepartureDate(LocalDate departureDate) {
+public void print(){
+    System.out.println("IMPORTANT NOTICE: As per our policy, the return date was changed because it was \n" +
+            "less than two days apart from your departure date.");
+}
+    public void setDepartureDate(LocalDate departure) {
+        if(Cha == 0){
+             returndate = departuredate.plus(2, ChronoUnit.DAYS);
+            print();
+        }
+    else{departuredate = departuredate;}
     }
 
     public void setReturnDate(LocalDate returnDate) {                                       //   poikhftfcfccfctt
+        if(Cha < 2){
+             returndate = departuredate.plus(2, ChronoUnit.DAYS);
+            print();
+        }
+        else{departuredate = departuredate;}
     }
 
     public LocalDate getReturnDate() {
-        return returnDate;
+        return returndate;
     }
     //==============================================================================================
     public enum TripType{
@@ -285,9 +302,6 @@ class FlightBooking {
     public String getPassengerFullName() {return passengerFullName;
     }
 
-
-
-
     public int getChildrenPassengers() {return childPassengers;
     }
 
@@ -311,20 +325,34 @@ class FlightBooking {
     double DepartingTicketPrice;
     double ReturnTicketPrice;
     public void setDepartingTicketPrice(int child,int adult) {
-        if(type == "11"){
-            if(Bookingclass == "FIRST")
-                DepartingTicketPrice = (child + adult)*(300 + 300*0.1 + 300*0.05 + 250);
-            if(Bookingclass == "BUSINESS")
-                DepartingTicketPrice= (child + adult)*(300 + 300*0.1 + 300*0.05 + 150);
-            if(Bookingclass == "ECONOMY")
-                DepartingTicketPrice = (child + adult)*(300 + 300*0.1 + 300*0.05 + 50);}
-        if(type == "22"){
-            if(Bookingclass == "FIRST")
-                DepartingTicketPrice = (child + adult)*(300 + 300*0.15 + 300*0.1 + 250);
-            if(Bookingclass == "BUSINESS")
-                DepartingTicketPrice = (child + adult)*(300 + 300*0.15 + 300*0.1 + 150);
-            if(Bookingclass == "ECONOMY")
-                DepartingTicketPrice = (child + adult)*(300 + 300*0.15 + 300*0.1 + 50);}
+        if(type == "11") {
+            if (Bookingclass == "FIRST") {
+                DepartingTicketPrice = (child + adult) * (300 + 300 * 0.1 + 300 * 0.05);
+                DepartingTicketPrice = 250 + DepartingTicketPrice;
+            }
+            if (Bookingclass == "BUSINESS") {
+                DepartingTicketPrice = (child + adult) * (300 + 300 * 0.1 + 300 * 0.05);
+                DepartingTicketPrice = 150 + DepartingTicketPrice;
+            }
+            if (Bookingclass == "ECONOMY") {
+                DepartingTicketPrice = (child + adult) * (300 + 300 * 0.1 + 300 * 0.05);
+                DepartingTicketPrice = 50 + DepartingTicketPrice;
+            }
+            if (type == "22") {
+                if (Bookingclass == "FIRST") {
+                    DepartingTicketPrice = (child + adult) * (300 + 300 * 0.15 + 300 * 0.1);
+                    DepartingTicketPrice = 250 + DepartingTicketPrice;
+                }
+                if (Bookingclass == "BUSINESS") {
+                    DepartingTicketPrice = (child + adult) * (300 + 300 * 0.15 + 300 * 0.1);
+                    DepartingTicketPrice = 150 + DepartingTicketPrice;
+                }
+                if (Bookingclass == "ECONOMY") {
+                    DepartingTicketPrice = (child + adult) * (300 + 300 * 0.15 + 300 * 0.1);
+                }
+                DepartingTicketPrice = 50 + DepartingTicketPrice;
+            }
+        }
     }
     public void setReturnTicketPrice() {
         ReturnTicketPrice = this.DepartingTicketPrice;
@@ -340,12 +368,11 @@ class FlightBooking {
                 ". Following are the details of your booking and the trip:" + "\n" +
                 "Ticket Number: " + TicketNumber + "\n" +
                 "From " + Tripsource+ " to " + Tripdestination+ "\n" +
-                "Date of departure: " + departureDate+ "\n" +
-                "Date of return: " + returnDate + "\n" +
+                "Date of departure: " + departuredate+ "\n" +
+                "Date of return: " + returndate + "\n" +
                 "Total passengers: " + totalPassengers + "\n" +
-                "Total ticket price in Euros: " + TotalTicketPrice+"\n"+
-                "IMPORTANT NOTICE: As per our policy, the return date was changed because it was \n" +
-                "less than two days apart from your departure date.";
+                "Total ticket price in Euros: " + TotalTicketPrice+"\n";
+
     }
 }
 
